@@ -40,11 +40,13 @@ exports.handler = async (event, context) => {
   console.log(apiVersion)
   console.log(data)
 
-  const priceRuleQuery = `query GetPriceRule($id: ID!) {
-    priceRule(id: $id) {
-      id
-      title
-      status
+  const priceRuleQuery = `query {
+    priceRules(first: 20) {
+      nodes {
+        id
+        title
+        status
+      }
     }
   }`
 
