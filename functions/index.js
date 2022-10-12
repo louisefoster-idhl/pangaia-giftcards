@@ -36,6 +36,8 @@ exports.handler = async (event, context) => {
     return await res.json()
   }
 
+  console.log(storeUrl)
+  console.log(apiVersion)
   console.log(data)
 
   const priceRuleQuery = `query GetPriceRule($id: ID!) {
@@ -49,9 +51,9 @@ exports.handler = async (event, context) => {
   const priceRule = await graphql(priceRuleQuery)
   console.log(priceRule)
 
-  await put(`customers/${data.customer}.json`, {
-    customer: { id: data.customer, tags: tags.join(',') }
-  })
+  // await put(`customers/${data.customer}.json`, {
+  //   customer: { id: data.customer, tags: tags.join(',') }
+  // })
 
   return {
     statusCode: 200,
