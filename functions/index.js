@@ -38,6 +38,21 @@ exports.handler = async (event, context) => {
 
   console.log(data)
 
+  const priceRuleQuery = `query GetPriceRule($id: ID!) {
+    priceRule(id: $id) {
+      id
+      title
+      status
+    }
+  }`
+
+  const priceRule = await graphql(priceRuleQuery)
+  console.log(priceRule)
+
+  await put(`customers/${data.customer}.json`, {
+    customer: { id: data.customer, tags: tags.join(',') }
+  })
+
   return {
     statusCode: 200,
     headers: { 'Access-Control-Allow-Origin': '*' },
