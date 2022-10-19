@@ -19,7 +19,8 @@ exports.handler = async (event, context) => {
       customerGets: {
         value: {
           discountAmount: {
-            amount: 25.00
+            amount: 25.00,
+            appliesOnEachItem: false
           }
         },
         items: {
