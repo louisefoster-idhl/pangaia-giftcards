@@ -39,27 +39,50 @@ exports.handler = async (event, context) => {
   console.log(data)
 
   const createDiscount = {
-    "query": "mutation discountCodeBasicCreate($basicCodeDiscount: DiscountCodeBasicInput!) { discountCodeBasicCreate(basicCodeDiscount: $basicCodeDiscount) { codeDiscountNode { codeDiscount { ... on DiscountCodeBasic { title codes(first: 10) { nodes { code } } startsAt endsAt customerSelection { ... on DiscountCustomerAll { allCustomers } } customerGets { value { ... on DiscountPercentage { percentage } } items { ... on AllDiscountItems { allItems } } } appliesOncePerCustomer } } } userErrors { field code message } } }",
-    "variables": {
-      "basicCodeDiscount": {
-        "title": "20% off all items during the summer of 2022",
-        "code": "SUMMER20",
-        "startsAt": "2022-06-21T00:00:00Z",
-        "endsAt": "2022-09-21T00:00:00Z",
-        "customerSelection": {
-          "all": true
-        },
-        "customerGets": {
-          "value": {
-            "percentage": 0.2
-          },
-          "items": {
-            "all": true
+    "query": `mutation {
+      discountCodeBasicCreate(basicCodeDiscount: {
+        title: "Code discount basic test",
+        startsAt: "2022-01-01",
+        endsAt: "2023-01-01",
+        usageLimit: 10,
+        appliesOncePerCustomer: true,
+        customerSelection: {
+          all: true
+        }
+        code: "TESTCODE1234",
+        customerGets: {
+          value: {
+            discountAmount:  {
+              amount: 1.00,
+              appliesOnEachItem: true
+            }
           }
-        },
-        "appliesOncePerCustomer": true
+          items: {
+            products: {
+              productsToAdd: ["gid://shopify/Product/5591484858390"]
+            }
+          }
+        }}) {
+        userErrors { field message code }
+        codeDiscountNode {
+          id
+            codeDiscount {
+            ... on DiscountCodeBasic {
+              title
+              summary
+              status
+              codes (first:10) {
+                edges {
+                  node {
+                    code
+                  }
+                }
+              }
+            }
+          }
+        }
       }
-    }
+    }`
   }
 
 
