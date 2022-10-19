@@ -16,45 +16,7 @@ exports.handler = async (event, context) => {
           'Content-Type': 'application/graphql',
           'X-Shopify-Access-Token': accessToken
         },
-        body: `mutation {
-          discountCodeBasicCreate(basicCodeDiscount: {
-            title: "20% off all items during the summer of 2022",
-            code: "SUMMER20",
-            startsAt: "2022-06-21T00:00:00Z",
-            endsAt: "2022-09-21T00:00:00Z",
-            customerSelection: {
-              all: true
-            },
-            customerGets: {
-              value: {
-                percentage: 0.2
-              },
-              items: {
-                all: true
-              }
-            },
-            appliesOncePerCustomer: true
-          }) {
-            userErrors { field message code }
-            codeDiscountNode {
-              id
-                codeDiscount {
-                ... on DiscountCodeBasic {
-                  title
-                  summary
-                  status
-                  codes (first:10) {
-                    edges {
-                      node {
-                        code
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }`
+        body: gql
       }
     )
     return await res.json()
@@ -77,9 +39,48 @@ exports.handler = async (event, context) => {
 
   console.log(data)
 
+  const discountMutation = `mutation {
+    discountCodeBasicCreate(basicCodeDiscount: {
+      title: "Test",
+      code: "TEST1",
+      startsAt: "2022-06-21T00:00:00Z",
+      endsAt: "2022-12-21T00:00:00Z",
+      customerSelection: {
+        all: true
+      },
+      customerGets: {
+        value: {
+          amount: 25
+        },
+        items: {
+          all: true
+        }
+      },
+      appliesOncePerCustomer: true
+      }) {
+      userErrors { field message code }
+      codeDiscountNode {
+        id
+          codeDiscount {
+          ... on DiscountCodeBasic {
+            title
+            summary
+            status
+            codes (first:10) {
+              edges {
+                node {
+                  code
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }`
 
-  const newDiscount = await graphql()
-  console.log(newDiscount)
+  const createDiscountCode = await graphql(discountMutation)
+  console.log(createDiscountCode)
 
   return {
     statusCode: 200,
