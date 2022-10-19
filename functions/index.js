@@ -21,7 +21,7 @@ exports.handler = async (event, context) => {
             title: "Code discount basic test",
             startsAt: "2022-01-01",
             endsAt: "2023-01-01",
-            usageLimit: 10,
+            usageLimit: 1,
             appliesOncePerCustomer: true,
             customerSelection: {
               all: true
@@ -30,13 +30,7 @@ exports.handler = async (event, context) => {
             customerGets: {
               value: {
                 discountAmount:  {
-                  amount: 1.00,
-                  appliesOnEachItem: true
-                }
-              }
-              items: {
-                products: {
-                  productsToAdd: ["gid://shopify/Product/5591484858390"]
+                  amount: 25.00,
                 }
               }
             }}) {
