@@ -36,22 +36,75 @@ exports.handler = async (event, context) => {
     return await res.json()
   }
 
-  console.log(storeUrl)
-  console.log(apiVersion)
   console.log(data)
 
-  const priceRuleQuery = `query {
-    priceRules(first: 20) {
-      nodes {
-        id
-        title
-        status
+  const createDiscount = {
+    "query": `mutation discountCodeBasicCreate($basicCodeDiscount: DiscountCodeBasicInput!) {
+      discountCodeBasicCreate(basicCodeDiscount: $basicCodeDiscount) {
+        codeDiscountNode {
+          codeDiscount {
+            ... on DiscountCodeBasic {
+              title
+              codes(first: 10) {
+                nodes {
+                  code
+                }
+              }
+              startsAt
+              endsAt
+              customerSelection {
+                ... on DiscountCustomerAll {
+                  allCustomers
+                }
+              }
+              customerGets {
+                value {
+                  ... on DiscountPercentage {
+                    percentage
+                  }
+                }
+                items {
+                  ... on AllDiscountItems {
+                    allItems
+                  }
+                }
+              }
+              appliesOncePerCustomer
+            }
+          }
+        }
+        userErrors {
+          field
+          code
+          message
+        }
+      }
+    }`,
+    "variables": {
+      "basicCodeDiscount": {
+        "title": "20% off all items during the summer of 2022",
+        "code": "SUMMER20",
+        "startsAt": "2022-06-21T00:00:00Z",
+        "endsAt": "2022-09-21T00:00:00Z",
+        "customerSelection": {
+          "all": true
+        },
+        "customerGets": {
+          "value": {
+            "percentage": 0.2
+          },
+          "items": {
+            "all": true
+          }
+        },
+        "appliesOncePerCustomer": true
       }
     }
-  }`
+  }
 
-  const priceRule = await graphql(priceRuleQuery)
-  console.log(priceRule)
+
+  const newDiscount = await graphql(createDiscount)
+  console.log(newDiscount)
 
   // await put(`customers/${data.customer}.json`, {
   //   customer: { id: data.customer, tags: tags.join(',') }
