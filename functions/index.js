@@ -33,7 +33,7 @@ exports.handler = async (event, context) => {
                 all: true
               }
             },
-            appliesOncePerCustomer: true
+            appliesOncePerCustomer: true,
             userErrors { field message code }
             codeDiscountNode {
               id
