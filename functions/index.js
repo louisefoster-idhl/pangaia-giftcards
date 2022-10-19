@@ -39,47 +39,7 @@ exports.handler = async (event, context) => {
   console.log(data)
 
   const createDiscount = {
-    "query": `mutation discountCodeBasicCreate($basicCodeDiscount: DiscountCodeBasicInput!) {
-      discountCodeBasicCreate(basicCodeDiscount: $basicCodeDiscount) {
-        codeDiscountNode {
-          codeDiscount {
-            ... on DiscountCodeBasic {
-              title
-              codes(first: 10) {
-                nodes {
-                  code
-                }
-              }
-              startsAt
-              endsAt
-              customerSelection {
-                ... on DiscountCustomerAll {
-                  allCustomers
-                }
-              }
-              customerGets {
-                value {
-                  ... on DiscountPercentage {
-                    percentage
-                  }
-                }
-                items {
-                  ... on AllDiscountItems {
-                    allItems
-                  }
-                }
-              }
-              appliesOncePerCustomer
-            }
-          }
-        }
-        userErrors {
-          field
-          code
-          message
-        }
-      }
-    }`,
+    "query": "mutation discountCodeBasicCreate($basicCodeDiscount: DiscountCodeBasicInput!) { discountCodeBasicCreate(basicCodeDiscount: $basicCodeDiscount) { codeDiscountNode { codeDiscount { ... on DiscountCodeBasic { title codes(first: 10) { nodes { code } } startsAt endsAt customerSelection { ... on DiscountCustomerAll { allCustomers } } customerGets { value { ... on DiscountPercentage { percentage } } items { ... on AllDiscountItems { allItems } } } appliesOncePerCustomer } } } userErrors { field code message } } }",
     "variables": {
       "basicCodeDiscount": {
         "title": "20% off all items during the summer of 2022",
