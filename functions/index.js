@@ -18,22 +18,22 @@ exports.handler = async (event, context) => {
         },
         body: `mutation {
           discountCodeBasicCreate(basicCodeDiscount: {
-            title: "Code discount basic test",
-            startsAt: "2022-01-01",
-            endsAt: "2023-01-01",
-            usageLimit: 1,
-            appliesOncePerCustomer: true,
-            customerSelection: {
-              all: true
-            }
-            code: "TESTCODE1234",
-            customerGets: {
-              value: {
-                discountAmount:  {
-                  amount: 25.00,
-                }
+            "title": "20% off all items during the summer of 2022",
+            "code": "SUMMER20",
+            "startsAt": "2022-06-21T00:00:00Z",
+            "endsAt": "2022-09-21T00:00:00Z",
+            "customerSelection": {
+              "all": true
+            },
+            "customerGets": {
+              "value": {
+                "percentage": 0.2
+              },
+              "items": {
+                "all": true
               }
-            }}) {
+            },
+            "appliesOncePerCustomer": true
             userErrors { field message code }
             codeDiscountNode {
               id
